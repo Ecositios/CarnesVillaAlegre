@@ -4,6 +4,7 @@ const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTIoAHMoqmWccj1
 const catalog = document.getElementById("catalog");
 const status = document.getElementById("status");
 const search = document.getElementById("search");
+const categoryFilter = document.getElementById("categoryFilter");
 
 let products = [];
 
@@ -23,7 +24,8 @@ function getValue(row, aliases) {
         const key = keys.find(k => normalize(k) === normalize(alias));
 
         if (key && String(row[key] || "").trim()) {
-            return String(row[key]).trim();
+            const value = String(row[key]).trim();
+            return value === "-" ? "" : value;
         }
     }
 
@@ -31,12 +33,15 @@ function getValue(row, aliases) {
 }
 
 function formatPrice(value) {
-    const number = Number(
-        String(value)
-            .replace(/[^\d,.-]/g, "")
-            .replace(/\.(?=\d{3}(?:\D|$))/g, "")
-            .replace(",", ".")
-    );
+    if (!value || String(value).trim() === "-") return "";
+
+    let raw = String(value).trim();
+
+    // Elimina decimales .00 o ,00
+    raw = raw.replace(/[.,]00$/, "");
+
+    // Conserva solamente los dígitos
+    const number = Number(raw.replace(/[^\d-]/g, ""));
 
     return Number.isFinite(number)
         ? number.toLocaleString("es-CL", {
@@ -44,24 +49,61 @@ function formatPrice(value) {
             currency: "CLP",
             maximumFractionDigits: 0
         })
-        : value;
+        : "";
 }
 
+// GENERAR FILTRO DE CATEGORÍAS
+
+function loadCategories() {
+    const categories = new Map();
+
+    products.forEach(row => {
+        const category = getValue(row, ["Imagen / sección"]);
+
+        if (category && !categories.has(normalize(category))) {
+            categories.set(normalize(category), category);
+        }
+    });
+
+    categoryFilter.innerHTML =
+        '<option value="">Todas las categorías</option>';
+
+    categories.forEach(category => {
+        const option = document.createElement("option");
+        option.value = normalize(category);
+        option.textContent = category;
+        categoryFilter.appendChild(option);
+    });
+}
+
+// MOSTRAR PRODUCTOS
+
 function render() {
-    const term = search.value.toLowerCase().trim();
+    const term = normalize(search.value);
+    const selectedCategory = categoryFilter.value;
 
     const filtered = products.filter(row => {
         const name = getValue(row, ["Descripción original"]);
         const category = getValue(row, ["Imagen / sección"]);
 
-        return (name + " " + category).toLowerCase().includes(term);
+        const matchesSearch =
+            normalize(name + " " + category).includes(term);
+
+        const matchesCategory =
+            !selectedCategory ||
+            normalize(category) === selectedCategory;
+
+        return matchesSearch && matchesCategory;
     });
 
     catalog.innerHTML = "";
 
+    status.textContent =
+        filtered.length + " de " + products.length + " productos";
+
     if (!filtered.length) {
         catalog.innerHTML =
-            '<div class="empty">No hay productos que coincidan con la búsqueda.</div>';
+            '<div class="empty">No hay productos que coincidan con los filtros.</div>';
         return;
     }
 
@@ -118,14 +160,16 @@ function render() {
             if (price1) {
                 const p1 = document.createElement("p");
                 p1.className = "price";
-                p1.textContent = "1-5 CJ / Chorti: " + formatPrice(price1);
+                p1.textContent =
+                    "1-5 CJ / Chorti: " + formatPrice(price1);
                 prices.appendChild(p1);
             }
 
             if (price2) {
                 const p2 = document.createElement("p");
                 p2.className = "price";
-                p2.textContent = "6-15 CJ / Chorti 3+: " + formatPrice(price2);
+                p2.textContent =
+                    "6-15 CJ / Chorti 3+: " + formatPrice(price2);
                 prices.appendChild(p2);
             }
 
@@ -136,6 +180,8 @@ function render() {
         catalog.appendChild(card);
     });
 }
+
+// CARGAR CATÁLOGO DESDE GOOGLE SHEETS
 
 async function loadCatalog() {
     try {
@@ -156,8 +202,9 @@ async function loadCatalog() {
 
             complete: results => {
                 products = results.data;
+
+                loadCategories();
                 render();
-                status.textContent = products.length + " registros";
             },
 
             error: error => {
@@ -175,6 +222,9 @@ async function loadCatalog() {
     }
 }
 
+// EVENTOS DE BÚSQUEDA Y FILTRO
+
 search.addEventListener("input", render);
+categoryFilter.addEventListener("change", render);
 
 loadCatalog();
