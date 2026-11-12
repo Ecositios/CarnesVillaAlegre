@@ -1,0 +1,166 @@
+
+:root {
+    --brand: #7b2026;
+    --dark: #50171b;
+    --bg: #f6f4f1;
+    --text: #292929;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    background:
+        linear-gradient(rgba(40, 10, 10, 0.60), rgba(40, 10, 10, 0.75)),
+        url("banner.png") center / cover no-repeat;
+
+    color: white;
+    text-align: center;
+    padding: 45px 15px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 34px;
+}
+
+.header p {
+    color: #ead7d8;
+}
+
+.eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 11px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 0 18px;
+}
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+#search {
+    width: 100%;
+    max-width: 400px;
+    padding: 13px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+#status {
+    color: #777;
+    font-size: 13px;
+}
+
+.catalog {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 18px;
+}
+
+.product {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #e8e3de;
+}
+
+.product img,
+.placeholder {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    background: #eee9e4;
+}
+
+.placeholder {
+    display: grid;
+    place-items: center;
+    color: #999;
+    font-size: 13px;
+}
+
+.info {
+    padding: 15px;
+}
+
+.category {
+    color: var(--brand);
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.name {
+    font-size: 18px;
+    margin: 8px 0;
+}
+
+.prices {
+    margin-top: 12px;
+    border-top: 1px solid #eee;
+    padding-top: 8px;
+}
+
+.price {
+    color: var(--dark);
+    font-size: 15px;
+    font-weight: bold;
+    margin: 7px 0;
+}
+
+.empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px;
+    background: white;
+    border-radius: 10px;
+}
+
+footer {
+    text-align: center;
+    color: #777;
+    padding: 25px;
+    font-size: 12px;
+}
+
+@media (max-width: 500px) {
+    .catalog {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .info {
+        padding: 11px;
+    }
+
+    .name {
+        font-size: 15px;
+    }
+
+    .price {
+        font-size: 13px;
+    }
+
+    .header h1 {
+        font-size: 27px;
+    }
+}
