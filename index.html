@@ -13,22 +13,40 @@
 <body>
 
     <header class="header">
-        <img src="favicon.png" alt="Carnes Villa Alegre" class="logo">
+        <img
+            src="favicon.png"
+            alt="Carnes Villa Alegre"
+            class="logo"
+        >
 
         <h1>Carnes Villa Alegre</h1>
-
         <p>Consulta nuestros productos y precios</p>
     </header>
+
     <main class="container">
 
         <section class="toolbar">
-            <input
-                type="search"
-                id="search"
-                placeholder="Buscar producto..."
-                aria-label="Buscar producto"
-            >
+
+            <div class="filters">
+
+                <input
+                    type="search"
+                    id="search"
+                    placeholder="Buscar producto..."
+                    aria-label="Buscar producto"
+                >
+
+                <select
+                    id="categoryFilter"
+                    aria-label="Filtrar por categoría"
+                >
+                    <option value="">Todas las categorías</option>
+                </select>
+
+            </div>
+
             <span id="status">Cargando catálogo...</span>
+
         </section>
 
         <section id="catalog" class="catalog">
@@ -37,8 +55,10 @@
     </main>
 
     <footer>
-        <p>Los precios y la disponibilidad pueden cambiar.
-        Consulta antes de realizar tu pedido.</p>
+        <p>
+            Los precios y la disponibilidad pueden cambiar.
+            Consulta antes de realizar tu pedido.
+        </p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
