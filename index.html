@@ -7,23 +7,34 @@
 
     <title>Carnes Villa Alegre</title>
 
+    <meta name="description" content="Consulta el catálogo de productos y precios de Carnes Villa Alegre.">
+
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    <header class="header">
-        <img
-            src="favicon.png"
-            alt="Carnes Villa Alegre"
-            class="logo"
-        >
-
-        <h1>Carnes Villa Alegre</h1>
-        <p>Consulta nuestros productos y precios</p>
-    </header>
-
     <main class="container">
+
+        <section class="intro">
+
+            <div class="intro-content">
+                <h1>
+                    Calidad y buenos precios,<br>
+                    <span>para tu negocio.</span>
+                </h1>
+
+                <p>
+                    Revisa nuestra lista de productos y encuentra el precio que necesitas.
+                </p>
+            </div>
+
+            <span id="status" class="status">
+                Cargando catálogo...
+            </span>
+
+        </section>
 
         <section class="toolbar">
 
@@ -32,7 +43,7 @@
                 <input
                     type="search"
                     id="search"
-                    placeholder="Buscar producto..."
+                    placeholder="Escribe el nombre del producto para buscar..."
                     aria-label="Buscar producto"
                 >
 
@@ -40,12 +51,31 @@
                     id="categoryFilter"
                     aria-label="Filtrar por categoría"
                 >
-                    <option value="">Todas las categorías</option>
+                    <option value="">Todos los productos</option>
                 </select>
 
             </div>
 
-            <span id="status">Cargando catálogo...</span>
+            <div class="category-section">
+
+                <span class="section-label">FILTRAR POR SECCIÓN</span>
+
+                <div id="categoryButtons" class="category-buttons">
+                    <button class="category-chip active" data-category="">
+                        Todos
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="catalog-hint">
+                <span class="az-icon">A–Z</span>
+                <span>Busca tus productos por nombre o sección.</span>
+                <span class="hint-separator">·</span>
+                <span>— significa que no hay precio informado.</span>
+                <span class="hint-separator">·</span>
+                <span>Consulta antes de realizar tu pedido.</span>
+            </div>
 
         </section>
 
@@ -54,11 +84,18 @@
 
     </main>
 
-    <footer>
-        <p>
-            Los precios y la disponibilidad pueden cambiar.
-            Consulta antes de realizar tu pedido.
-        </p>
+    <footer class="footer">
+
+        <div class="footer-content">
+
+            <h2>CARNES VILLA ALEGRE</h2>
+
+            <span class="footer-line"></span>
+
+            <p>Calidad y buenos precios para tu negocio</p>
+
+        </div>
+
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
